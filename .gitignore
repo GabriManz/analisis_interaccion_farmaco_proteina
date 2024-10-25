@@ -1,2 +1,36 @@
-data/pdb_files/
+# Evitar que se suba el script fgs y la carpeta pdb_files
 scripts/fgs.py
+data/pdb_files/
+
+# Archivos y carpetas de Python
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+*.pdb
+*.so
+
+# Entornos virtuales
+venv/
+.env/
+
+# Archivos de configuración y caché de Jupyter Notebook
+.ipynb_checkpoints
+.notebook_cache/
+notebooks/.ipynb_checkpoints/
+
+# Archivos de resultados y datos grandes
+data/input/
+data/processed/
+data/pdb_files/
+results/
+RESULTS/
+output/
+
+# Archivos temporales del sistema y del editor
+*.swp
+*.tmp
+*.DS_Store
+*.vscode/
+*.idea/
+
