@@ -98,7 +98,7 @@ def main_extract_ligands_uniprot():
     cif_directory = "./data/pdb_files/"
     resultados_path = "./data/processed/result_pdb.csv"
     blacklist_path = "./data/input/blacklist.txt"
-    output_path = "./data/processed/Filtered_Extract_Ligands_Uniprot.csv"
+    output_path = "./data/processed/filtered_extract_ligands_uniprot.csv"
 
     # Procesar archivos CIF en lotes y obtener UniProt IDs
     archivos_cif = glob.glob(f"{cif_directory}/*.cif")
