@@ -19,14 +19,6 @@ venv/
 .notebook_cache/
 notebooks/.ipynb_checkpoints/
 
-# Archivos de resultados y datos grandes
-data/input/
-data/processed/
-data/pdb_files/
-results/
-RESULTS/
-output/
-
 # Archivos temporales del sistema y del editor
 *.swp
 *.tmp
