@@ -193,6 +193,7 @@ def calcular_estadisticas_heteroatomos(fgs):
 def visualizar_coocurrencia_top_20_fgs(fgs):
     # Utilizar la primera columna como referencia
     mol_col = fgs.iloc[:, 0]
+
     # Crear una tabla de presencia/ausencia de FGs por molécula usando la primera columna
     fg_presence = pd.crosstab(mol_col, fgs['pseudo_smiles'])
 
@@ -205,6 +206,12 @@ def visualizar_coocurrencia_top_20_fgs(fgs):
     # Seleccionar los 20 fragmentos más comunes y filtrar la matriz de co-ocurrencia
     top_20_fgs = fgs['pseudo_smiles'].value_counts().index[:20]
     co_occurrence_top_20 = co_occurrence_df.loc[top_20_fgs, top_20_fgs]
+
+    # Convertir la matriz a float para permitir NaN
+    co_occurrence_top_20 = co_occurrence_top_20.astype(float)
+
+    # Eliminar la diagonal (asignarla a np.nan para que no se considere en la escala de color)
+    np.fill_diagonal(co_occurrence_top_20.values, np.nan)
 
     # Visualizar la matriz de co-ocurrencia con un mapa de calor
     plt.figure(figsize=(10, 8))

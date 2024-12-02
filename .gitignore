@@ -1,6 +1,7 @@
 # Evitar que se suba el script fgs y la carpeta pdb_files
 scripts/fgs.py
-data/pdb_files/
+data/estructuras_pdb/
+data/DUD-E_results
 
 # Archivos y carpetas de Python
 *.pyc

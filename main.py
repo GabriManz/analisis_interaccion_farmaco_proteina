@@ -2,7 +2,7 @@
 from scripts import interacciones_proteina
 from scripts import descarga_estructuras_pdb
 from scripts import extract_ligands_uniprot
-from scripts.fgs import generate_fgs_pdb, generate_fgs_drugbank
+from scripts.fgs import generate_fgs_pdb, generate_fgs_drugbank, generate_fgs_decoy
 
 # Ejecutar el script interacciones_proteina para generar el dataset principal
 interacciones_proteina.main_interacciones_proteina()
