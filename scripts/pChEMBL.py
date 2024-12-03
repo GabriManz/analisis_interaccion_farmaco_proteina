@@ -1,3 +1,73 @@
+"""
+##########################
+### Documentación del Dataset Generado
+##########################
+
+Descripción General:
+Este script procesa datos provenientes de ChEMBL, BindingDB y PDBBind para generar un dataset integrado con valores pChEMBL,
+pKi, y otras métricas de afinidad ligando-proteína. El dataset final permite el análisis y modelado de interacciones
+químico-biológicas mediante valores estandarizados de actividad.
+
+Origen de los Datos:
+1. ChEMBL:
+   - Valores de pChEMBL asociados a combinaciones de ligandos (InChI Key) y proteínas (UniProt ID).
+   - Obtenido mediante consultas a la API de ChEMBL.
+2. BindingDB:
+   - Valores de afinidad (Ki) extraídos del archivo `BindingDB_All.tsv`.
+   - Convertidos a valores pKi para su estandarización.
+3. PDBBind:
+   - Valores pChEMBL extraídos del archivo `pdb_bind_data.xlsx`.
+   - Incluye identificadores de complejos PDB y ligandos asociados.
+
+Objetivo del Dataset:
+- Proporcionar un dataset estandarizado para el análisis de interacciones ligando-proteína.
+- Integrar datos de múltiples fuentes para facilitar estudios comparativos.
+- Generar valores de actividad (pChEMBL) para ligandos y proteínas con datos faltantes imputados mediante valores aleatorios entre cuartiles (Q1, Q3).
+
+Estructura del Dataset Final:
+- Columnas principales:
+  1. `InChI`: Identificador químico del ligando.
+  2. `UNIPROT_ID`: Identificador UniProt de la proteína objetivo.
+  3. `pChEMBL`: Valor de actividad calculado o imputado, basado en valores de pChEMBL, pKi o valores faltantes rellenados.
+  4. `Complejos PDB_ID`: Identificador PDB del complejo asociado.
+
+Procesamiento:
+1. **Obtención de datos desde ChEMBL:**
+   - Se realiza una búsqueda por InChI Key y UniProt ID.
+   - Se extraen valores pChEMBL mediante consultas a la API con control de tasa y reintentos.
+2. **Procesamiento de BindingDB:**
+   - Se calculan valores pKi a partir de Ki (nM) con la fórmula `-log10(Ki/1e9)`.
+   - Se agrupan los datos por UniProt ID e InChI Key para calcular la mediana de pKi.
+3. **Integración de PDBBind:**
+   - Se extraen valores pChEMBL asociados a identificadores PDB.
+4. **Combinación de valores:**
+   - Se priorizan los valores pChEMBL de PDBBind, seguidos por los de ChEMBL y luego pKi.
+   - Valores faltantes de pChEMBL se imputan con valores aleatorios entre Q1 y Q3.
+5. **Agrupación final:**
+   - Se agrupan los datos por `InChI` y `UNIPROT_ID`, conservando la media de `pChEMBL` y el primer `Complejos PDB_ID`.
+
+Archivos Generados:
+1. Dataset Final:
+   - Archivo de salida: `dataset_with_pchembl.csv`.
+   - Contiene los valores de pChEMBL integrados y procesados para cada combinación única de ligando y proteína.
+
+Ubicaciones de Archivos:
+- Archivos de entrada:
+  1. `Filtered_Extract_Ligands_Uniprot.csv`: Ligandos y proteínas originales.
+  2. `BindingDB_All.tsv`: Datos de afinidad de BindingDB.
+  3. `pdb_bind_data.xlsx`: Datos de PDBBind.
+- Archivo de salida:
+  - `./data/processed/dataset_with_pchembl.csv`.
+
+Limitaciones:
+- La calidad de los valores pChEMBL depende de la disponibilidad y precisión de los datos en ChEMBL, BindingDB y PDBBind.
+- Ligandos y proteínas sin valores conocidos tendrán imputaciones aleatorias dentro de un rango estadístico.
+
+Tamaño Aproximado:
+- Dependerá del número de combinaciones de ligandos y proteínas disponibles en los archivos de entrada.
+"""
+
+
 from chembl_webresource_client.new_client import new_client
 import pandas as pd
 import numpy as np

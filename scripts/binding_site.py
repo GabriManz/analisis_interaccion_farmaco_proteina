@@ -1,3 +1,64 @@
+"""
+##########################
+### Documentación del Dataset 
+##########################
+
+Descripción General:
+Este script procesa estructuras PDB (en formato `.cif`) y genera un dataset con la secuencia del sitio de unión al ligando de las proteínas,
+representado tanto como una secuencia ordenada de aminoácidos como un vector en formato one-hot encoding. Este dataset puede ser utilizado
+para análisis de interacción proteína-ligando y modelado basado en características estructurales.
+
+Origen de los Datos:
+1. Proteínas y ligandos:
+   - Archivo de entrada: `filtered_extract_ligands_uniprot.csv`.
+   - Contiene información sobre proteínas, ligandos y complejos PDB asociados.
+   - Se utiliza para identificar los complejos a procesar.
+2. Estructuras PDB:
+   - Carpeta de entrada: `estructuras_pdb/`.
+   - Contiene archivos `.cif` con las estructuras tridimensionales de los complejos proteína-ligando.
+
+Objetivo del Dataset:
+- Capturar y representar las secuencias de los sitios de unión al ligando en proteínas.
+- Proporcionar representaciones en formato one-hot encoding para cada secuencia del sitio de unión.
+- Facilitar análisis estructurales y bioinformáticos, como predicción de interacciones proteína-ligando o diseño de fármacos.
+
+Estructura del Dataset:
+- Columnas principales:
+  1. `PDB_ID`: Identificador único del complejo PDB procesado.
+  2. `Binding_Site_Sequence_Ordered`: Secuencia ordenada de aminoácidos en el sitio de unión al ligando.
+  3. `One_Hot_Encoding`: Representación one-hot de la secuencia de aminoácidos en el sitio de unión.
+- Cada fila corresponde a un complejo proteína-ligando.
+
+Procesamiento:
+1. **Identificación de ligandos y proteínas:**
+   - El script filtra duplicados y filas nulas del archivo de entrada basado en los identificadores de InChI, UNIPROT_ID, y Ligand PDB_ID.
+2. **Extracción del sitio de unión:**
+   - Se procesa el archivo `.cif` correspondiente a cada complejo.
+   - Se identifican los residuos cercanos al ligando (dentro de un radio de 4 Å).
+   - Se genera la secuencia ordenada de aminoácidos en el sitio de unión.
+3. **Conversión a one-hot encoding:**
+   - La secuencia de aminoácidos se convierte en un vector binario utilizando un mapa de aminoácidos estándar.
+
+Archivos Generados:
+1. `binding_site_one_hot.csv`: Archivo de salida con la información del sitio de unión en los complejos procesados.
+   - Contiene las columnas `PDB_ID`, `Binding_Site_Sequence_Ordered`, y `One_Hot_Encoding`.
+
+Ubicaciones de Archivos:
+- Archivo de entrada: `./data/processed/filtered_extract_ligands_uniprot.csv`.
+- Carpeta de estructuras PDB: `./data/estructuras_pdb/`.
+- Archivo de salida: `./data/processed/binding_site_one_hot.csv`.
+
+Limitaciones:
+- Las estructuras PDB deben estar disponibles en la carpeta especificada (`estructuras_pdb/`).
+- Solo se procesan residuos aminoacídicos estándar cercanos al ligando.
+- Complejos con datos faltantes o estructuras incompatibles no se incluyen en el dataset final.
+
+Tamaño Aproximado:
+- Dependerá del número de complejos proteína-ligando procesados.
+- Cada sitio de unión contiene una secuencia y un vector one-hot de longitud variable, según el número de residuos involucrados.
+"""
+
+
 import os
 import pandas as pd
 import numpy as np

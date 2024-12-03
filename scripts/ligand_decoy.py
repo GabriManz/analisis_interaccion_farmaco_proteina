@@ -1,3 +1,57 @@
+"""
+##########################
+### Documentación del Dataset
+##########################
+
+Descripción General:
+Este dataset combina información de ligandos y decoys procesados para tareas de modelado químico-biológico.
+Se incluye información química, representaciones estructurales y métricas de similitud, junto con datos funcionales
+como representaciones n-hot de los grupos funcionales más frecuentes.
+
+Origen de los Datos:
+1. Ligandos iniciales:
+   - Archivo de entrada: `filtered_extract_ligands_uniprot.csv`.
+   - Contiene identificadores de ligandos en formato InChI y metadatos asociados.
+   - Convertidos a formato SMILES para su procesamiento.
+2. Decoys:
+   - Carpeta de entrada: `DUD-E_results/`.
+   - Archivos `.picked` con información sobre ligandos y decoys asociados.
+3. Representaciones funcionales:
+   - Archivo intermedio: `fgs_decoy.csv`.
+   - Incluye pseudo-SMILES generados a partir de las estructuras de los decoys.
+
+Objetivo del Dataset:
+- Facilitar estudios comparativos entre ligandos activos y sus decoys (compuestos señuelo).
+- Permitir análisis de similitud estructural mediante la métrica Tanimoto.
+- Proporcionar una base para modelar interacciones químico-biológicas mediante representaciones funcionales.
+
+Estructura del Dataset:
+1. Ligandos y Decoys:
+   - `Ligand_SMILES`: Representación SMILES del ligando original.
+   - `Ligand_ID`: Identificador único del ligando.
+   - `Decoy_SMILES`: Representación SMILES del decoy asociado.
+   - `Tanimoto_Similarity`: Similitud Tanimoto entre el ligando y el decoy.
+   - `Actividad`: Valor binario (0 para decoys, 1 para ligandos activos).
+2. Representaciones funcionales (n-hot):
+   - `n_hot_fgs`: Representación n-hot de los grupos funcionales más frecuentes.
+
+Archivos Generados:
+1. `valid_smiles.txt`: Lista de SMILES válidos extraídos de los ligandos iniciales.
+2. `ligand_decoy.csv`: Dataset combinado de ligandos y decoys, incluyendo similitudes Tanimoto.
+3. `fgs_decoy.csv`: Representación funcional en formato pseudo-SMILES.
+4. `fgs_decoy_n_hot.csv`: Representaciones n-hot de los grupos funcionales más frecuentes.
+
+Ubicaciones de Archivos:
+- Todos los archivos generados se guardan en el directorio `./data/processed/`.
+
+Tamaño Aproximado:
+- Depende del número de ligandos y decoys procesados. Los datasets suelen contener:
+  - Miles de ligandos iniciales.
+  - Decoys generados para cada ligando (dependiendo del algoritmo DUD-E).
+  - Grupos funcionales representados en las columnas n-hot.
+"""
+
+
 import os
 import pandas as pd
 from rdkit import Chem
