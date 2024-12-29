@@ -66,6 +66,11 @@ group_counts = data['pseudo_smiles'].value_counts()
 # Seleccionar los 100 grupos funcionales más frecuentes
 top_100_groups = group_counts.head(100).index
 
+# Guardar los top 100 grupos funcionales en un archivo CSV
+top_100_groups_df = pd.DataFrame({'pseudo_smiles': top_100_groups})
+top_100_groups_path = './data/processed/top_100_fgs_ligandos_originales.csv'
+top_100_groups_df.to_csv(top_100_groups_path, index=False)
+
 # Crear una columna con listas de grupos funcionales
 data['functional_groups'] = data['pseudo_smiles'].apply(lambda x: [x])
 
